@@ -1,0 +1,16 @@
+int     _tmain(int argc, _TCHAR* argv[]);
+void    CreateHelpers();
+void    CreateMyMutex();
+void    InitSettingsFiles();
+bool    IsParent64();
+void    ReadShortcuts();
+bool    ReadStoredDirs(TCHAR charDrive, TCHAR ** szPath, bool bOnlyUnder);
+void    RescanAll();
+void	RescanFolder(NgramBuilder * buildMain, NgramBuilder * buildMini, char * szPath, size_t * pnLastLen);
+int     Run64Bit(int argc, _TCHAR* argv[]);
+void    ShowHelp();
+bool    TryGoUp(TCHAR * szPath);
+bool    TryStandardCD(TCHAR * szPath);
+int		MainInternal(int argc, _TCHAR* argv[]);
+void	OldWarnings();
+void	ShowStats();

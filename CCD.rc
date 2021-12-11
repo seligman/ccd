@@ -1,0 +1,48 @@
+#ifdef APSTUDIO_INVOKED
+#error "Don't do that!"
+#endif
+
+#include "resource.h"
+
+#ifdef INCLUDE_64
+IDR_CCD64BIT    DataFiles DISCARDABLE "x64\Release\CCD.exe"
+#endif
+
+/* 38 INTVERSION */
+
+1 VERSIONINFO
+ FILEVERSION 0,3,8,0 /* COMMAVERSION */
+ PRODUCTVERSION 0,3,8,0 /* COMMAVERSION */
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", ""
+            VALUE "CompanyName", "Scott Seligman"
+            VALUE "FileDescription", "Cursorial CD"
+            VALUE "FileVersion", "38" /* INTVERSION */
+            VALUE "InternalName", "Cursorial CD"
+            VALUE "LegalCopyright", "Copyright 2015 by Scott Seligman"
+            VALUE "LegalTrademarks", ""
+            VALUE "OriginalFilename", "ccd.exe"
+            VALUE "PrivateBuild", ""
+            VALUE "ProductName", ""
+            VALUE "ProductVersion", "38" /* INTVERSION */
+            VALUE "SpecialBuild", ""
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
