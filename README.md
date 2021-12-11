@@ -4,7 +4,7 @@ Cursorial CD, or `ccd` for short, is a `cd` replacement for Window's cmd shell. 
 
 ![](images/basic.png)
 
-If there are multiple matches for a directory you enter, it presents a small based TUI to select the correct directory:
+If there are multiple matches for a directory you enter, it presents a small TUI based to select the correct directory:
 
 ![](images/tui.png)
 
