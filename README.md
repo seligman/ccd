@@ -4,11 +4,11 @@ Cursorial CD, or `ccd` for short, is a `cd` replacement for Window's cmd shell. 
 
 ![](images/basic.png)
 
-If there are multiple matches for a directory you enter, it presents a small TUI based to select the correct directory:
+If there are multiple matches for a directory you enter, it presents a small TUI dialog to select the correct directory:
 
 ![](images/tui.png)
 
-You can also create some shortcut keywords to jump to a directory you need to often go to with a memorable keyword:
+You can also create a file with shortcut keywords to jump to a directory you need to often go to with a memorable keyword:
 
 ![](images/shortcuts.png)
 
