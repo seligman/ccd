@@ -1,5 +1,9 @@
 #include "main.h"
 
+#ifdef _DEBUG
+#define TEST_MODE // A mode to just test out the UI and match algo
+#endif
+
 #include "xtrack.h"
 #include "NextLine.h"
 #include "RemoteThread.h"
@@ -467,7 +471,11 @@ bool TryGoUp(TCHAR * szPath)
     {
         for (int i = 0; i < nGoUp; i ++)
         {
+#ifdef TEST_MODE
+			_tprintf_s(_T("CD: %s\n"), _T(".."));
+#else
             ChangeParentCurrentDirectory(HIDEW_DOTDOT);
+#endif
         }
         return true;
     }
@@ -489,7 +497,11 @@ bool TryStandardCD(TCHAR * szInputPath)
 
     if (_tcslen(szInputPath) == 1 && szInputPath[0] == _T('\\'))
     {
-        ChangeParentCurrentDirectory(HIDEW_SLASH);
+#ifdef TEST_MODE
+		_tprintf_s(_T("CD: %s\n"), _T("\\"));
+#else
+		ChangeParentCurrentDirectory(HIDEW_SLASH);
+#endif
         bRet = true;
     }
     else if (_tcslen(szPath) == 2 && szPath[1] == _T(':'))
@@ -498,7 +510,11 @@ bool TryStandardCD(TCHAR * szInputPath)
         bRet = true;
         szPath[2] = _T('\\');
         szPath[3] = 0;
-        ChangeParentCurrentDirectory(szPath);
+#ifdef TEST_MODE
+		_tprintf_s(_T("CD: %s\n"), szPath);
+#else
+		ChangeParentCurrentDirectory(szPath);
+#endif
     }
     else
     {
@@ -554,7 +570,11 @@ bool TryStandardCD(TCHAR * szInputPath)
 			XTRACK(szProperName);
             GetFullPathName(szPartial, dwLen, szProperName, &szFile);
 
-            ChangeParentCurrentDirectory(szProperName);
+#ifdef TEST_MODE
+			_tprintf_s(_T("CD: %s\n"), szProperName);
+#else
+			ChangeParentCurrentDirectory(szProperName);
+#endif
 
 			XUNTRACK(szProperName);
             delete[] szProperName;
@@ -967,7 +987,7 @@ void CreateMyMutex()
     while (sizeof(ULONG_PTR) == 4)
     {
         HANDLE hMutex = CreateMutex(NULL, TRUE, HIDEW_MUTEXNAME);
-		XTRACK(hMutex);
+		// XTRACK(hMutex); // Let this leak, so it's only closed when the app closes
         if (GetLastError() == ERROR_ALREADY_EXISTS)
         {
             if (!bWarningShown)
@@ -1072,11 +1092,13 @@ void ShowStats()
 
 int MainInternal(int argc, _TCHAR* argv[])
 {
+#ifndef TEST_MODE
     // If the parent process is 64-bit (and we're not) then run the 64-bit version
 	if (IsParent64() && (sizeof(ULONG_PTR) != 8))
 	{
         return Run64Bit(argc, argv);
 	}
+#endif
 
 	bool work = true;
 	int ret = 0;
@@ -1093,6 +1115,7 @@ int MainInternal(int argc, _TCHAR* argv[])
 		InitSettingsFiles();
 	}
 
+#ifndef TEST_MODE
     // No clue what this will do for non-CMD processes, so don't even try
     if (work && !VerifyIsCMD())
     {
@@ -1100,6 +1123,7 @@ int MainInternal(int argc, _TCHAR* argv[])
 		work = false;
 		ret = 1;
     }
+#endif
 
 	bool bShowHelp = false;
 	bool bNoSmartMatching = false;
@@ -1354,7 +1378,11 @@ int MainInternal(int argc, _TCHAR* argv[])
 					}
 					else
 					{
+#ifdef TEST_MODE
+						_tprintf_s(_T("CD: %s\n"), cur->Data.szFullName);
+#else
 						ChangeParentCurrentDirectory(cur->Data.szFullName);
+#endif
 					}
 					work = false;
 				}
@@ -1377,7 +1405,11 @@ int MainInternal(int argc, _TCHAR* argv[])
 								}
 								else
 								{
+#ifdef TEST_MODE
+									_tprintf_s(_T("CD: %s\n"), cur->Data.szFullName);
+#else
 									ChangeParentCurrentDirectory(cur->Data.szFullName);
+#endif
 								}
 								work = false;
 							}
@@ -1421,7 +1453,11 @@ int MainInternal(int argc, _TCHAR* argv[])
 						}
 						else
 						{
+#ifdef TEST_MODE
+							_tprintf_s(_T("CD: %s\n"), szFirst);
+#else
 							ChangeParentCurrentDirectory(szFirst);
+#endif
 						}
 						work = false;
 					}
@@ -1445,7 +1481,11 @@ int MainInternal(int argc, _TCHAR* argv[])
 					TCHAR * szSelection = ui->Show();
 					if (szSelection)
 					{
+#ifdef TEST_MODE
+						_tprintf_s(_T("CD: %s\n"), szSelection);
+#else
 						ChangeParentCurrentDirectory(szSelection);
+#endif
 					}
 					XUNTRACK(ui);
 					delete ui;
