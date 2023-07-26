@@ -9,11 +9,11 @@ IDR_CCD64BIT    DataFiles DISCARDABLE "x64\Release\CCD.exe"
 IDR_CCDARM      DataFiles DISCARDABLE "ARM64\Release\CCD.exe"
 #endif
 
-/* 38 INTVERSION */
+/* 39 INTVERSION */
 
 1 VERSIONINFO
- FILEVERSION 0,3,8,0 /* COMMAVERSION */
- PRODUCTVERSION 0,3,8,0 /* COMMAVERSION */
+ FILEVERSION 0,3,9,0 /* COMMAVERSION */
+ PRODUCTVERSION 0,3,9,0 /* COMMAVERSION */
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -31,14 +31,14 @@ BEGIN
             VALUE "Comments", ""
             VALUE "CompanyName", "Scott Seligman"
             VALUE "FileDescription", "Cursorial CD"
-            VALUE "FileVersion", "38" /* INTVERSION */
+            VALUE "FileVersion", "39" /* INTVERSION */
             VALUE "InternalName", "Cursorial CD"
             VALUE "LegalCopyright", "Copyright 2015 by Scott Seligman"
             VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", "ccd.exe"
             VALUE "PrivateBuild", ""
             VALUE "ProductName", ""
-            VALUE "ProductVersion", "38" /* INTVERSION */
+            VALUE "ProductVersion", "39" /* INTVERSION */
             VALUE "SpecialBuild", ""
         END
     END
