@@ -26,10 +26,6 @@ Release
 **/.DS_Store/
 
 # Local things
-*.py
 *.cmd
-*.pl
 Self Delete/*
-Make Hidden/*
 Setup/*
-Ngram Tester/*
