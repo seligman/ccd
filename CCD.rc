@@ -6,6 +6,7 @@
 
 #ifdef INCLUDE_64
 IDR_CCD64BIT    DataFiles DISCARDABLE "x64\Release\CCD.exe"
+IDR_CCDARM      DataFiles DISCARDABLE "ARM64\Release\CCD.exe"
 #endif
 
 /* 38 INTVERSION */

@@ -1093,6 +1093,17 @@ char* GetHiddenA(int index)
         }
         break;
 
+        /* IsWow64Process2 */
+    case STR_ISWOW64PROCESS2:
+        {
+            static char localBuffer[16];
+            len = 15;
+            pad1 = "\xd2\x57\xe3\xdd\x64\xe2\xee\xe5\xcd\xd8\x40\x09\x1e\x9a\x2a";
+            pad2 = "\x9b\x24\xb4\xb2\x13\xd4\xda\xb5\xbf\xb7\x23\x6c\x6d\xe9\x18";
+            buffer = localBuffer;
+        }
+        break;
+
         /* LookupPrivilegeValueW */
     case STR_LOOKUPPRIVILEGEVALUEW:
         {

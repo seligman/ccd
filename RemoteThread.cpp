@@ -7,15 +7,15 @@
 #include "ProcessInfo.h"
 #include "Hidden.h"
 
-const DWORD MAXINJECTSIZE = 4096;
+#define MAXINJECTSIZE 4096
 
-typedef HMODULE (__stdcall *PLoadLibraryW)(wchar_t*);
-typedef HMODULE (__stdcall *PGetModuleHandleW)(wchar_t*);
-typedef BOOL    (__stdcall *PFreeLibrary)(HMODULE);
-typedef FARPROC (__stdcall *PGetProcAddress)(HMODULE, char*);
-typedef BOOL    (__stdcall *PSetCurrentDirectory)(wchar_t*);
-typedef DWORD   (__stdcall *PGetCurrentDirectory)(DWORD, wchar_t*);
-typedef BOOL    (__stdcall *PSetEnvironmentVariable)(wchar_t*,wchar_t*);
+typedef HMODULE (WINAPI *PLoadLibraryW)(LPCWSTR);
+typedef HMODULE (WINAPI *PGetModuleHandleW)(LPCWSTR);
+typedef BOOL    (WINAPI *PFreeLibrary)(HMODULE);
+typedef FARPROC (WINAPI *PGetProcAddress)(HMODULE, LPCSTR);
+typedef BOOL    (WINAPI *PSetCurrentDirectory)(LPCWSTR);
+typedef DWORD   (WINAPI *PGetCurrentDirectory)(DWORD, LPCWSTR);
+typedef BOOL    (WINAPI *PSetEnvironmentVariable)(LPCWSTR, LPCWSTR);
 
 struct RemoteThreadBlock
 {
@@ -333,7 +333,7 @@ void ChangeParentCurrentDirectory(wchar_t* szNewDirectory)
         DWORD dwID = GetParentProcessID(GetCurrentProcessId());
 
         LoadDllForRemoteThread(dwID, szNewDirectory);
-    }
+}
     else
     {
 #endif
@@ -542,8 +542,7 @@ cleanup:
     return result;
 }
 
-
-DWORD __stdcall RemoteThread(RemoteThreadBlock* execBlock)
+static __declspec(code_seg(".text$1")) DWORD WINAPI RemoteThread(RemoteThreadBlock* execBlock)
 {
     typedef DWORD (*PRemoteDllFunction)();
 

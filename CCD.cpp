@@ -21,6 +21,7 @@
 #include "CCD.h"
 
 typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+typedef BOOL (WINAPI* LPFN_ISWOW64PROCESS2) (HANDLE, USHORT*, USHORT*);
 
 LinkedList<Result>  g_llFound;
 LinkedList<Result>  g_llIgnore;
@@ -34,7 +35,8 @@ TCHAR       g_szAllDirs[MAX_PATH];
 TCHAR       g_szShortcutDirs[MAX_PATH];
 TCHAR       g_charDrive;
 bool		g_bOutputOnly = false;
-LPFN_ISWOW64PROCESS	g_fnIsWow64Process = NULL;
+LPFN_ISWOW64PROCESS		g_fnIsWow64Process = NULL;
+LPFN_ISWOW64PROCESS2	g_fnIsWow64Process2 = NULL;
 
 void InitSettingsFiles()
 {
@@ -818,7 +820,7 @@ bool VerifyIsCMD()
 {
     bool bRunningUnderCMD = false;
 
-    DWORD dwParentID = (DWORD)GetParentProcessID(GetCurrentProcessId());
+    ULONG_PTR dwParentID = GetParentProcessID(GetCurrentProcessId());
     TCHAR szProcName[MAX_PATH];
     memset(szProcName, 0, MAX_PATH * sizeof TCHAR);
 
@@ -857,10 +859,28 @@ bool VerifyIsCMD()
 int Run64Bit(int argc, _TCHAR* argv[])
 {
     // Load the embedded resource
-    HRSRC hRsrc = FindResource(NULL, MAKEINTRESOURCE(IDR_CCD64BIT), HIDEW_DATAFILES);
-    DWORD dwMem = (DWORD) LoadResource(NULL, hRsrc);
-    LPVOID lpMem = (LPVOID) LockResource((LPVOID) dwMem);
-	DWORD dwSize = SizeofResource(NULL, hRsrc);
+	DWORD executable = IDR_CCD64BIT;
+	if (NULL == g_fnIsWow64Process2)
+	{
+		g_fnIsWow64Process2 = (LPFN_ISWOW64PROCESS2)GetProcAddress(
+			GetModuleHandle(HIDEW_KERNEL32), HIDEA_ISWOW64PROCESS2);
+	}
+	if (NULL != g_fnIsWow64Process2)
+	{
+		USHORT processMachine = 0;
+		USHORT nativeMachine = 0;
+		if (g_fnIsWow64Process2(GetCurrentProcess(), &processMachine, &nativeMachine))
+		{
+			if (nativeMachine == IMAGE_FILE_MACHINE_ARM64)
+			{
+				executable = IDR_CCDARM;
+			}
+		}
+	}
+	HRSRC hRsrc = FindResource(NULL, MAKEINTRESOURCE(executable), HIDEW_DATAFILES);
+	HGLOBAL dwMem = LoadResource(NULL, hRsrc);
+    LPVOID lpMem = LockResource(dwMem);
+	DWORD dwSize = (DWORD)SizeofResource(NULL, hRsrc);
 
     // Construct a 64-bit filename
 	TCHAR szFile[MAX_PATH];
